@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.io.IOException;
 import java.sql.ResultSet;
 
+
 // Importações para interagir com o banco de dados
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -55,11 +56,6 @@ public class AppTest {
 
     }
 
-
-
-
-
-
     // Método executado após todos os testes
     @AfterClass
     public static void tearDown() {
@@ -71,14 +67,6 @@ public class AppTest {
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
-
-
 
 
 
@@ -100,7 +88,6 @@ public class AppTest {
     }
 
 
-
     // Método auxiliar para inserir um usuário de teste
     private void inserirUsuarioTesteCarga(String nome, int idade) {
         try (Connection connection = DriverManager.getConnection(TEST_DB_URL);
@@ -116,9 +103,6 @@ public class AppTest {
             e.printStackTrace();
         }
     }
-
-
-
 
 
     // Método auxiliar para listar usuários do banco de dados
@@ -150,13 +134,12 @@ public class AppTest {
     public void deletarUsuario() {
  
         testCargaInsercaoUsuarios();
-        testDeletarCargaUsuarios(); 
-
+        deletarCargaUsuarios(); 
 
     }
 
 
-   public void  testDeletarCargaUsuarios () {
+   public void  deletarCargaUsuarios () {
             try (Connection connection = DriverManager.getConnection(TEST_DB_URL);
              PreparedStatement statement = connection.prepareStatement("DELETE FROM usuarios WHERE id = ?")) {
 
@@ -175,7 +158,6 @@ public class AppTest {
             System.out.println("Lista de usuários após deletado"); 
             listarUsuarios();
             
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

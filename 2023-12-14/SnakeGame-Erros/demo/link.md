@@ -176,9 +176,13 @@ T003
     - Resultados obtidos: java.lang.AssertionError
  at com.example.SnakeGameTest.testSnakeCollision(SnakeGameTest.java:148)
 
-- Observações: O erro está na classe MovementAndCollision, na linha 54. Na linha `SnakeGame.Tile snakePart = snakeGame.snakeBody.get(i);` o método get deveria recuperar a posição i - 1 do segmento do corpo, já que é o segmento anterior do corpo da cobra, ao invés de recuperar o segmento atual. 
+- Observações: O erro está na classe MovementAndCollision, na linha 74. Na linha `return tile1.x != tile2.x && tile1.y != tile2.y ` o correto seria `return tile1.x == tile2.x && tile1.y == tile2.y `. 
 
 
+
+
+
+return tile1.x == tile2.x && tile1.y == tile2.y;
 
 T004 
 

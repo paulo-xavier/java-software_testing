@@ -71,7 +71,7 @@ public class MovementAndCollision {
     
     public boolean collision(SnakeGame.Tile tile1, SnakeGame.Tile tile2) {
         // Verifica se as coordenadas X e Y dos dois objetos Tile são iguais
-        return tile1.x != tile2.x && tile1.y != tile2.y;
+        return tile1.x == tile2.x && tile1.y == tile2.y;
         
     }
 
