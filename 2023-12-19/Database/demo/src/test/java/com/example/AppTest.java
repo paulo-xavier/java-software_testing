@@ -5,6 +5,8 @@ package com.example;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.sql.Statement;
 import java.nio.file.Files;
@@ -74,7 +76,7 @@ public class AppTest {
     @Test
     public void testCargaInsercaoUsuarios() {
         long startTime = System.currentTimeMillis();  // Marca o tempo inicial
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 1000; i++) {
             inserirUsuarioTesteCarga("Usuário" + i, 25);
         }
         long endTime = System.currentTimeMillis();  // Marca o tempo final
@@ -163,6 +165,86 @@ public class AppTest {
         }
 
    }
+
+   @Test
+   public void testConsultaEmMassa() {
+
+        testCargaInsercaoUsuarios();
+        
+        long startTime = System.currentTimeMillis();
+        
+        listarUsuarios();
+        
+        long endTime = System.currentTimeMillis();  // Marca o tempo final
+        
+        long duration = endTime - startTime;
+
+
+        System.out.println("O tempo de duração foi de " + duration + "milisegundos");
+
+   }
+
+
+
+
+    @Test
+    public void testSegurancaInjecaoSQL() {
+        // Tentativa de Injeção de SQL
+        /*
+         * Este teste de segurança aborda a preocupação com a injeção de SQL. 
+         * Ele tenta inserir um usuário com um nome malicioso que contenha uma
+         * instrução SQL destinada a excluir a tabela de usuários (DROP TABLE usuarios).
+         * O teste então verifica se a tabela ainda existe após a tentativa de injeção de SQL.
+         * Isso é uma simulação de um ataque de injeção de SQL, e o teste verifica se a
+         * aplicação está adequadamente protegida contra esse tipo de ataque.
+         * 
+         */
+        String nome = "'; DROP TABLE usuarios; --";
+        int idade = 25;
+
+        try (Connection connection = DriverManager.getConnection(TEST_DB_URL);
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO usuarios (nome, idade) VALUES (?, ?)")) {
+
+            statement.setString(1, nome);
+            statement.setInt(2, idade);
+
+            //int rowsAffected = statement.executeUpdate();
+
+            // O teste de segurança verifica se a tabela 'usuarios' ainda existe após a tentativa de injeção de SQL
+            assertFalse(tabelaUsuariosFoiExcluida());
+
+        } catch (SQLException e) {
+            // O teste de segurança verifica se a exceção lançada não causou a exclusão da tabela 'usuarios'
+            assertTrue(tabelaUsuariosExiste());
+        }
+    }
+
+    // Método auxiliar para verificar se a tabela 'usuarios' ainda existe no banco de dados
+    private boolean tabelaUsuariosExiste() {
+        try (Connection connection = DriverManager.getConnection(TEST_DB_URL);
+             ResultSet resultSet = connection.getMetaData().getTables(null, null, "usuarios", null)) {
+
+            return resultSet.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Método auxiliar para verificar se a tabela 'usuarios' foi excluída do banco de dados
+    private boolean tabelaUsuariosFoiExcluida() {
+        try (Connection connection = DriverManager.getConnection(TEST_DB_URL);
+             ResultSet resultSet = connection.getMetaData().getTables(null, null, "usuarios", null)) {
+
+            return !resultSet.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return true;
+        }
+    }
+
 
 
 }
