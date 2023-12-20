@@ -1,0 +1,156 @@
+package com.example;
+import static org.junit.Assert.*; 
+import org.junit.Before; 
+import org.junit.Test; 
+import java.awt.event.*; 
+
+
+
+
+public class SnakeGameTest{
+
+
+    private static App board; 
+    private static SnakeGame snakeGame; 
+
+    @Before 
+    public void setUp () {
+        board = new App();
+        snakeGame = new SnakeGame(board.getBoardWidth(), board.getBoardHeight());
+
+        //snakeGame.velocityX = 1; 
+        //snakeGame.velocityY = 0;
+  
+    } 
+
+    @Test
+    public void testSnakeHeadPosition() {
+    
+        assertEquals(0, snakeGame.snakeHead.x);
+        assertEquals(0, snakeGame.snakeHead.y);
+    }
+
+    
+    @Test
+    public void testInitialScore() {
+        int initialScore = snakeGame.snakeBody.size(); 
+        assertEquals(0, initialScore);    
+    }
+
+
+    @Test 
+    public void boardSize () {
+        
+        int boardWidth = snakeGame.boardWidth; 
+        int boardHeight = snakeGame.boardHeight; 
+        
+        assertEquals(600, boardWidth); 
+        assertEquals(600, boardHeight); 
+    }
+
+
+    @Test
+    public void verifyTilesSize(){
+                
+        int tileSize = snakeGame.tileSize; 
+
+        assertEquals(25, tileSize); 
+    }
+
+    
+    @Test 
+    public void testGameInterval() {
+
+        int gameInterval = snakeGame.gameLoop.getDelay();
+
+        assertEquals(100, gameInterval);    
+
+    }   
+    
+
+    @Test
+    public void randomFoodPosition () {
+
+        int initialPositionX = snakeGame.food.x; 
+        int initialPositionY = snakeGame.food.y; 
+
+        // Tile food = new Tile(positionX, positionY); 
+        snakeGame.placeFood();
+
+        assertNotEquals(initialPositionX, snakeGame.food.x); 
+        assertNotEquals(initialPositionY, snakeGame.food.y); 
+
+    } 
+
+
+    
+    @Test 
+    public void testGameOver () {
+
+        assertEquals(false, snakeGame.gameOver);
+
+        assertNotEquals(true, snakeGame.gameOver); 
+
+        assertFalse(snakeGame.gameOver); 
+    }
+
+
+
+    @Test 
+    public void testRightMoving () {
+
+        snakeGame.keyPressed(new KeyEvent(snakeGame, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_RIGHT, 'D' ));
+        assertEquals(1, snakeGame.directionX); 
+        assertEquals(0, snakeGame.directionY);
+        
+    }
+    
+    
+    @Test 
+    public void testLeftMoving () {
+
+        snakeGame.directionX = 0; 
+
+        snakeGame.keyPressed(new KeyEvent(snakeGame, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_LEFT, 'A' ));
+        assertEquals(-1, snakeGame.directionX); 
+        assertEquals(0, snakeGame.directionY);
+        
+    }
+    
+    
+    @Test 
+    public void testUpMoving () {
+
+        snakeGame.keyPressed(new KeyEvent(snakeGame, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_UP, 'W' ));
+        assertEquals(0, snakeGame.directionX); 
+        assertEquals(-1, snakeGame.directionY);
+        
+    }
+    
+    @Test 
+    public void testDownMoving () {
+
+        snakeGame.keyPressed(new KeyEvent(snakeGame, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_DOWN, 'S' ));
+        assertEquals(0, snakeGame.directionX); 
+        assertEquals(1, snakeGame.directionY);
+        
+    }
+
+
+    @Test
+    public void testSnakeCollision (){
+        
+        snakeGame.snakeBody.add(snakeGame.new Tile(5, 5));
+        snakeGame.snakeBody.add(snakeGame.new Tile(5, 6));
+        snakeGame.snakeBody.add(snakeGame.new Tile(5, 7));
+
+        snakeGame.snakeHead = snakeGame.new Tile(5, 5); 
+
+        assertTrue(snakeGame.movementAndCollision.collision(snakeGame.snakeHead, snakeGame.snakeBody.get(0)));
+
+
+    }
+    
+
+
+}

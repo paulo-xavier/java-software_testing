@@ -1,0 +1,12 @@
+ Cite e descreve 3 técnicas que podem ser utilizadas para
+Validação ou Verificação de software.
+
+
+
+Na parte de teste de software, existe diversas formas de aplicar o conceito de Validação ou Verificação de software, para 
+assim poder testar a qualidade e eficácia do software. 
+
+- Uma das técnicas vistas foi o Teste de Aceitação do Usuário que consiste em verificar o grau de aceitação
+do usuário perante o sistema final desenvolvido. Com esse tipo de teste, conseguimos fazer a validação
+do nosso sistema com o usuário e assim, perceber se o sistema atende as necessidades e requisitos do 
+usuário. 	
