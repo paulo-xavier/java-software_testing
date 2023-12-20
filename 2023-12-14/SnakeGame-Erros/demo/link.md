@@ -181,9 +181,6 @@ T003
 
 
 
-
-return tile1.x == tile2.x && tile1.y == tile2.y;
-
 T004 
 
 - Objetivo: 
